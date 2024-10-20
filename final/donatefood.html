@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Food Donation Form</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+    }
+
+    .main {
+      max-width: 600px;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      margin-left: 650px;
+      margin-top: 52px;
+
+    }
+
+    .signup form {
+      display: flex;
+      flex-direction: column;
+      background-color: #ffb411;
+      padding: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      font-weight: bold;
+      color: white;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: white;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .changecolour{
+      background-color: #45a049;
+    }
+
+    #map-container {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      right: 50%;
+      transform: translate(-50%, -50%);
+      width: 850px;
+      height: 400px;
+      border: 2px solid #ccc;
+      background-color: #fff;
+      z-index: 9999;
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    #map {
+      height: 100%;
+      width: 100%;
+      border-radius: 6px;
+    }
+
+    #close-button {
+      margin-top: 10px;
+      text-align: center;
+    }
+    .food_type{
+       color: black;
+    }
+
+
+    .foodtypeclass{
+      margin-top: 8px;
+    }
+
+    .nameofthefoodclass{
+      margin-top: 8px;
+    }
+
+    .quantityclass{
+      margin-top: 6px;
+    }
+
+    .mobilenumberclass{
+      margin-top: 8px;
+    }
+
+    .textareaclass{
+      margin-top: 8px;
+    }
+
+    #freshupto{
+      padding-right: 8px;
+    }
+
+    #location{
+      margin-top: 8px;
+    }
+
+    /* fresh time id*/
+    #freshTime{
+      background-color: #f4f4f4;
+      border-color: rgb(0, 0, 0);
+      border-radius: 5px;
+    }
+
+    #submitButton{
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .imagediv{
+      background-color: #ffffff;
+      border-radius: 15px;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="main">    
+    <div class="signup">
+      <form>
+        <label style="color: #ffb411;">FOOD DONATING INTERFACE</label>
+        <div class="form-group">
+          <label for="food_type" class="food_type">Type of Food</label>
+          <select name="food_type" id="food_type" class="foodtypeclass">
+            <option value="cardtype" selected disabled>Select any one</option>
+            <option value="Veg">Veg</option>
+            <option value="Non-Veg">Non-Veg</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="food_name" class="food_type">Name of food item</label>
+          <input type="text" name="food_name" id="foodName" placeholder="Enter food item" required class="nameofthefoodclass">
+        </div>
+        <div class="form-group">
+          <label for="quantity" class="food_type">Quantity</label>
+          <input type="number" name="quantity" id="quantity" placeholder="Enter quantity" required class="quantityclass">
+        </div>
+        <br>
+        <div class="form-group">
+          <label for="fresh_time" class="food_type" id="freshupto">Fresh Up To</label>
+          <input type="time" name="fresh_time" id="freshTime" required>
+        </div>
+        <div class="form-group">
+          <button onclick="showMap()" class="food_type" id="location">My Location</button>
+        </div>
+        <br>
+        <div class="form-group">
+          <label for="mobile" class="food_type">Your Mobile Number</label>
+          <input type="number" name="mobile" id="mobileNumber" placeholder="Enter your mobile number" required class="mobilenumberclass">
+        </div>
+        <br>
+        <div class="form-group">
+          <label for="details" class="food_type">Any Other Details</label>
+          <textarea name="details"  cols="30" rows="5" placeholder="Enter any other details... " id="otherDetails" class="textareaclass"></textarea>
+        </div>
+        <button id="submitButton" style="color: black;">Submit</button>
+      </form>
+    </div>
+  </div>
+  <div id="map-container">
+    <div id="map"></div>
+    <div id="close-button">
+      <br>
+      <button class="changecolour" onclick="closeMap()">OK</button>
+    </div>
+  </div>
+
+  <script>
+    var map;
+    let a;
+    let b;
+
+    function initMap() {
+      map = L.map('map').setView([51.505, -0.09], 13);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(map);
+    }
+
+    function showMap() {
+      document.getElementById('map-container').style.display = 'block';
+      initMap();
+    }
+
+    function closeMap() {
+      document.getElementById('map-container').style.display = 'none';
+      var center = map.getCenter();
+      console.log('Coordinates:', center.lat, center.lng);
+
+      a = center.lat;
+      b = center.lng;
+      // You can replace "My Location" text with the location name in your UI here
+      document.querySelector('button[onclick="showMap()"]').innerText = 'Location: ' + center.lat + ', ' + center.lng;
+    }
+
+    document.getElementById('submitButton').addEventListener('click', async function(event) {
+      event.preventDefault();
+      // Get values from input fields
+      const foodName = document.getElementById('foodName').value;
+      const quantity = document.getElementById('quantity').value;
+      const freshTime = document.getElementById('freshTime').value;
+      const location = [a, b];
+      const mobileNumber = document.getElementById('mobileNumber').value;
+      const otherDetails = document.getElementById('otherDetails').value;
+
+      try {
+        const response = await fetch('http://localhost:8888/storedonations', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ foodName, quantity, freshTime, location, mobileNumber, otherDetails })
+        });
+
+        const data = await response.text();
+        console.log(data); // Log the response from the server
+      } catch (error) {
+        console.error(error);
+      }
+
+      window.location.href = 'thanks.html';
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+    <link rel="stylesheet" href="recieve_food.css">
+</head>
+<body>
+    <div class="container">
+        <div class="left-section" id="map"></div>
+        <div class="right-section">
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Enter search term...">
+                <button id="searchButton">Search</button>
+            </div>
+            <div class="results-container" id="searchResults"></div>
+        </div>
+    </div>
+
+    <div id="goback">
+        <i class="fas fa-arrow-left"></i> <!-- Font Awesome icon -->
+    </div>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="recieve_food.js"></script>
+</body>
+</html>

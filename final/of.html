@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Split Background</title>
+<style>
+  body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+  }
+
+  .container {
+    display: flex;
+    height: 100vh;
+  }
+
+  .white-section {
+    flex: 1;
+    background-color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  .yellow-section {
+    flex: 0.8;
+    background-color: #ffb411;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    overflow: hidden; /* Hide overflowing content */
+  }
+
+  .details-container {
+    width: 70%;
+    background-color: #ffffff;
+    border-radius: 15px;
+    height: 600px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+    font-size: 28px;
+  }
+
+  .detail {
+    margin-bottom: 10px;
+    font-size: 24px; /* Larger font size for details */
+  }
+
+  .heading {
+    font-size: 75px; /* Large font size for heading */
+    color: #ffb411; /* Reddish-brown color */
+    margin-bottom: 20px;
+  }
+
+  .animated-text {
+    font-size: 50px; /* Very large font size for appearing and disappearing text */
+    animation: slideRightToLeft 3s infinite alternate; /* Adjust animation duration as needed */
+  }
+
+  @keyframes slideRightToLeft {
+    0% {
+      transform: translateX(100%); /* Start off-screen right */
+      opacity: 0; /* Start with transparency */
+    }
+    50% {
+      transform: translateX(0); /* Slide into view */
+      opacity: 1; /* Fully visible */
+    }
+    100% {
+      transform: translateX(-100%); /* Slide off-screen left */
+      opacity: 0; /* Disappear */
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="white-section">
+    <div class="details-container">
+      <h2 class="heading">Details</h2> <br>
+      <div class="detail1">Detail 1</div><br>
+      <div class="detail2">Detail 2</div><br>
+      <div class="detail3">Detail 3</div><br>
+      <div class="detail4">Detail 4</div><br>
+      <div class="detail5">Detail 5</div><br>
+      <div class="detail6">Detail 6</div><br>
+    </div>
+  </div>
+  <div class="yellow-section">
+    <p class="animated-text">Dial for a Meal</p>
+  </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // Retrieve parameters from the URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const foodType = urlParams.get('param1');
+    const quantity = urlParams.get('param2');
+    const freshTime = urlParams.get('param3');
+    const location = urlParams.get('param4');
+    const mobileNumber = urlParams.get('param5');
+    const otherDetails = urlParams.get('param6');
+
+    // Update text content of each div
+    document.querySelector('.detail1').textContent = `Food Type: ${foodType}`;
+    document.querySelector('.detail2').textContent = `Quantity: ${quantity}`;
+    document.querySelector('.detail3').textContent = `Fresh up to: ${freshTime}`;
+    document.querySelector('.detail4').textContent = `Location: ${location}`;
+    document.querySelector('.detail5').textContent = `Mobile Number: ${mobileNumber}`;
+    document.querySelector('.detail6').textContent = `Other Details: ${otherDetails}`;
+});
+</script>
+
+</body>
+</html>

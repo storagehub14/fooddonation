@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot</title>
+
+    <style>
+        body {
+            background-color: #ffb411;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        #chatbox {
+            width: 300px;
+            height: 400px;
+            background-color: white;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+            padding: 100px;
+        }
+
+        #messages {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        #input-container {
+            display: flex;
+            gap: 10px;
+            padding: 20px;
+            border-top: 1px solid #ddd;
+        }
+
+        #userInput {
+            flex-grow: 1;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ffb411;
+        }
+
+        .user-msg,
+        .bot-msg {
+            margin: 8px 0;
+            padding: 8px 12px;
+            border-radius: 10px;
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+
+        .user-msg {
+            background-color: #d1e7dd;
+            align-self: flex-end;
+        }
+
+        .bot-msg {
+            background-color: #f8d7da;
+            align-self: flex-start;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="chatbox">
+        <div id="messages"></div>
+        <div id="input-container">
+            <input id="userInput" placeholder="Type your message here">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        const responses = {
+            'hello': 'Hello! How can I assist you?',
+            'hi': 'Hi! How can I assist you?',
+            'hii': 'Hii! How can I assist you?',
+            'hiii': 'Hiii! How can I assist you?',
+            'special': 'Here is the special information you requested!',
+            'bye': 'Goodbye! Have a nice day!'
+        };
+
+        function sendMessage() {
+            const userText = document.getElementById('userInput').value.trim().toLowerCase();
+            if (!userText) return; // Prevent sending empty messages
+
+            const messagesDiv = document.getElementById('messages');
+            messagesDiv.innerHTML += `<div class="user-msg">You: ${userText}</div>`;
+
+            const botResponse = responses[userText] || 'Sorry, I don\'t understand that.';
+            messagesDiv.innerHTML += `<div class="bot-msg">Bot: ${botResponse}</div>`;
+
+            messagesDiv.scrollTop = messagesDiv.scrollHeight; // Auto-scroll to the latest message
+            document.getElementById('userInput').value = ''; // Clear input field
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+
+<!-- specifing the language and direction of the text
+     language=english
+     direction=left to right(ltr)
+-->
+<html lang="en" dir="ltr">
+
+<head>
+  <title>Sign Up</title>
+  <meta charset="UTF-8">
+
+  <link rel="stylesheet" href="style.css">
+
+  <!-- setting the viewport
+   width=device-width (the viewport must same size of the view's screen)
+   inital-scale=1.0(inital zoom level of the webpage be original size)
+  -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+</head>
+<body>
+<!-- The container -->
+<div class="container">
+    <input type="checkbox" id="flip">
+
+    <!-- The cover -->
+    <div class="cover"> 
+
+      <!-- Front of the cover-->
+      <div class="front">
+        
+             <!--Front cover text-->
+             <div class="text">
+                  <span class="text-1">Sharing Goodness <br> one meal at a time</span>
+                  <span class="text-2">Give a bowl full of love</span>
+             </div>
+      </div>
+
+      <!-- Back of the cover-->
+      <div class="back">
+        <img src="donateimage.png" alt="#" height="50px" width="50px">
+            <!-- Back cover text-->
+            <div class="text">
+                <span class="text-1">Complete miles of journey <br> with one step</span>
+                <span class="text-2">Let's get started</span>
+            </div>
+      </div>
+  </div>
+
+  <!--The main form(contains both left and right sides)-->
+  <div class="forms">
+       <div class="form-content">
+          <div class="login-form">
+        <div class="title">Login</div>
+        <form id="loginForm">
+          <div class="input-boxes">
+            <div class="input-box">
+              <i class="fas fa-phone-alt"></i>
+              <input id="loginName" type="text" placeholder="Name" required>
+            </div>
+            <div class="input-box">
+              <i class="fas fa-lock"></i>
+              <input id="loginPassword" type="password" placeholder="Enter your password" required>
+            </div>
+            <div class="button input-box">
+              <input type="submit" value="Submit">
+            </div>
+            <div class="text sign-up-text">Don't have an account? <label for="flip">Sign up now</label></div>
+          </div>
+        </form>
+      </div>
+      
+      <div class="signup-form">
+        <div class="title">Sign up</div>
+        <form id="signupForm">
+          <div class="input-boxes">
+            <div class="input-box">
+              <i class="fas fa-user"></i>
+              <input id="signupName" type="text" placeholder="Enter your name" required>
+            </div>
+            <div class="input-box">
+              <i class="fas fa-blind"></i>
+              <input id="signupAge" type="tel" placeholder="Enter Age" required>
+            </div>
+            <div class="input-box">
+              <i class="fas fa-phone-alt"></i>
+              <input id="signupPhoneNumber" type="text" placeholder="Phone Number" required>
+            </div>
+            <div class="input-box">
+              <i class="fas fa-envelope"></i>
+              <input id="signupEmail" type="email" placeholder="Enter your email" required>
+            </div>
+            <div class="input-box">
+              <i class="fas fa-lock"></i>
+              <input id="signupPassword" type="password" placeholder="Enter your password" required>
+            </div>
+            <div class="button input-box">
+              <input type="submit" value="Submit">
+            </div>
+            <div class="text sign-up-text">Already have an account? <label for="flip">Login now</label></div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.getElementById('loginForm').addEventListener('submit',async  function(event) {
+    event.preventDefault();
+    var name = document.getElementById('loginName').value;
+    var password = document.getElementById('loginPassword').value;
+    
+
+    const response = await fetch(`http://localhost:8888/GetUser?username=${name}&password=${password}`);
+    const data = await response.json();
+    if (data.length === 0) {
+      var name = document.getElementById('loginPhoneNumber');
+        var password= document.getElementById('loginPassword');
+ 
+// Clearing the fields
+name.value = '';
+password.value = '';
+alert("Invalid credentials");
+  } else {
+    window.location.href = 'home.html';
+  }
+ });
+
+  document.getElementById('signupForm').addEventListener('submit', async function(event) {
+    event.preventDefault();
+    var userName = document.getElementById('signupName').value;
+    var age = document.getElementById('signupAge').value;
+    var phoneNumber = document.getElementById('signupPhoneNumber').value;
+    var email = document.getElementById('signupEmail').value;
+    var password = document.getElementById('signupPassword').value;
+  
+    try {
+      const response = await fetch('http://localhost:8888/User', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ userName,age,phoneNumber,email, password })
+      });
+
+      window.location.href = 'home.html';
+      const data = await response.text();
+      console.log(data); // Log the response from the server
+  } catch (error) {
+      console.error(error);
+  }
+});
+</script>
+</body>
+</html>

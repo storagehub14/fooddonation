@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Collage</title>
+    <style>
+        /* Style for the container */
+        .collage {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Responsive grid */
+            gap: 10px; /* Gap between images */
+        }
+
+        /* Style for the images */
+        .collage img {
+            max-width: 100%; /* Ensure images don't exceed their container */
+            height: auto; /* Maintain aspect ratio */
+            border-radius: 5px; /* Add a border radius for rounded corners */
+        }
+
+        /* Style for loading indicator */
+        .loading {
+            text-align: center;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="collage" id="collage">
+        <!-- Images will be dynamically added here -->
+    </div>
+    <div class="loading" id="loading">Loading...</div>
+
+    <script>
+        
+        const collage = document.getElementById('collage');
+        const loading = document.getElementById('loading');
+        let page = 1; // Initial page number
+
+        async function fetchImages() {
+            loading.style.display = 'block'; // Show loading indicator
+            const response = await fetch(`fetch-images.php?page=${page}`);
+            const images = await response.json();
+
+            if (images.length === 0) {
+                window.removeEventListener('scroll', scrollHandler); // No more images to load
+            }
+
+            images.forEach(image => {
+                const img = document.createElement('img');
+                img.src = image.url;
+                img.alt = image.alt;
+                collage.appendChild(img);
+            });
+
+            loading.style.display = 'none'; // Hide loading indicator
+            page++; // Increment page number for next fetch
+        }
+
+        async function scrollHandler() {
+            if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+                await fetchImages(); // Fetch more images when user scrolls to bottom
+            }
+        }
+
+        window.addEventListener('scroll', scrollHandler);
+
+        fetchImages(); // Initial fetch
+    </script>
+</body>
+</html>

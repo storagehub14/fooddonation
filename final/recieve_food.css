@@ -1,0 +1,58 @@
+.container {
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* Dividing into two columns, right two-thirds, left one-third */
+    height: 100vh; /* Full height of the viewport */
+}
+
+.left-section {
+    border: 2px solid black; /* Border style */
+    display: flex;
+    flex-direction: column;
+    border-radius: 5px; /* Rounded corners */
+    margin: 10px; /* Margin */
+}
+
+.right-section {
+    width: 100%; /* Full width */
+}
+
+.search-container {
+    padding: 10px; /* Padding */
+    display: flex;
+    align-items: center; /* Center align items */
+}
+
+#searchInput {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 200px; /* Adjust width */
+}
+
+button {
+    background-color: #ffb411;
+    padding: 10px 20px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 10px; /* Adjust margin */
+}
+
+.searchResult {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+#goback {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    z-index: 9999; /* Ensure it's on top of everything */
+    cursor: pointer;
+    font-size: 20px;
+    color: #333;
+}
